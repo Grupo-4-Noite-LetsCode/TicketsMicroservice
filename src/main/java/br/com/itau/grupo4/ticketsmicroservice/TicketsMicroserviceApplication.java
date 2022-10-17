@@ -1,13 +1,15 @@
 package br.com.itau.grupo4.ticketsmicroservice;
 
+import br.com.itau.grupo4.ticketsmicroservice.model.Ticket;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TicketsmicroserviceApplication {
+public class TicketsMicroserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TicketsmicroserviceApplication.class, args);
+
+		SpringApplication.run(TicketsMicroserviceApplication.class, args);
 	}
 
 }
