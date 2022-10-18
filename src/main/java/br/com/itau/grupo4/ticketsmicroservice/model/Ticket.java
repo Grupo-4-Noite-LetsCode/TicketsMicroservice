@@ -15,15 +15,10 @@ public class Ticket {
 
     @Id
     private UUID id = UUID.randomUUID();
-
     private UUID sessionId;
-
     private String status;
-
     private String seatColumn;
-
     private String seatRow;
-
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
 }
