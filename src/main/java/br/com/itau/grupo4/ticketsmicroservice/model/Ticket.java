@@ -1,12 +1,12 @@
 package br.com.itau.grupo4.ticketsmicroservice.model;
 
+import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketType;
 import lombok.Data;
+import lombok.Generated;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -14,9 +14,11 @@ import java.util.UUID;
 public class Ticket {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue
+    @Type(type="org.hibernate.type.UUIDCharType")
+    private UUID id;
     private UUID sessionId;
-    private String status;
+    private TicketStatus status;
     private String seatColumn;
     private String seatRow;
     @Enumerated(EnumType.STRING)
