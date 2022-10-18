@@ -24,13 +24,8 @@ public class SessionService {
                 .patch()
                 .uri("/session/unblock-seat")
                 .body(Mono.just(request), SessionRequest.class)
-                .exchangeToMono( response -> {
-                    if(response.statusCode().is2xxSuccessful()){
-                        return response.bodyToMono(SessionResponse.class);
-                    } else {
-                        return response.createException().flatMap(Mono::error);
-                    }
-                });
+                .retrieve()
+                .bodyToMono(SessionResponse.class);
         return sessionResponseMono;
     }
 }
