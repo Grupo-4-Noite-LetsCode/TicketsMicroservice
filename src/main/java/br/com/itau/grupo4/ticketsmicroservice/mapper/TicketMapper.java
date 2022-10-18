@@ -10,7 +10,7 @@ public class TicketMapper {
         ticket.setSessionId(request.getSessionId());
         ticket.setSeatColumn(request.getSeatColumn());
         ticket.setSeatRow(request.getSeatRow());
-        ticket.setTicketType(request.getTicketType());
+        ticket.setType(request.getType());
 
         return ticket;
     }
