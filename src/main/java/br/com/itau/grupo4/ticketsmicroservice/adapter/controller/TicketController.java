@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-
 import java.util.UUID;
 
 @RestController
@@ -27,10 +25,11 @@ public class TicketController {
 
     }
 
-    @GetMapping()
-    public Mono<String> generateQrCode(){
-        var response = qrCodeAPI.getQrCode("https://youtube.com");
-        return response;
+    @GetMapping("qr/{id}")
+    public ResponseEntity<String> generateQrCode(@PathVariable UUID id){
+        var url = "http://localhost:8080/tickets/" + id;
+        var response = qrCodeAPI.getQrCode(url);
 
+        return ResponseEntity.ok(response);
     }
 }

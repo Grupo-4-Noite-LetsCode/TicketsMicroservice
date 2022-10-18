@@ -5,6 +5,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Base64;
+
 @Service
 public class GenerateQrCodeAPI {
     private WebClient webClient;
@@ -15,13 +17,14 @@ public class GenerateQrCodeAPI {
                 .build();
     }
 
-    public Mono<String> getQrCode(String url) {
-        Mono<String> qrCodeMono = this.webClient
+    public String getQrCode(String url) {
+        Mono<byte[]> qrCodeMono = this.webClient
                 .get()
                 .uri("/create-qr-code/?data=".concat(url))
                 .retrieve()
-                .bodyToMono(String.class);
-        return qrCodeMono;
+                .bodyToMono(byte[].class);
+
+        return Base64.getEncoder().encodeToString(qrCodeMono.block());
     }
 }
 
