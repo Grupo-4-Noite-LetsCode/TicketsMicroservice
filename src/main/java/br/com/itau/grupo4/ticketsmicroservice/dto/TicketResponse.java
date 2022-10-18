@@ -14,7 +14,7 @@ public class TicketResponse {
     private UUID id;
     private UUID sessionId;
     private TicketStatus status;
-    private String seatColumn;
-    private String seatRow;
+    private int seatColumn;
+    private int seatRow;
     private TicketType type;
 }

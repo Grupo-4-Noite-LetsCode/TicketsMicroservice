@@ -8,8 +8,8 @@ import java.util.UUID;
 @Data
 public class BuyTicketsRequest {
     private UUID sessionId;
-    private String seatColumn;
-    private String seatRow;
+    private int seatColumn;
+    private int seatRow;
     private TicketType type;
 }
 

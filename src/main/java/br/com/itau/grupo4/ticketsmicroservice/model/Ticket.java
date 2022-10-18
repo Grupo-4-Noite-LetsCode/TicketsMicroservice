@@ -24,9 +24,9 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status = TicketStatus.PEDIDO_RECEBIDO;
 
-    private String seatColumn;
+    private int seatColumn;
 
-    private String seatRow;
+    private int seatRow;
 
     @Enumerated(EnumType.STRING)
     private TicketType type;

@@ -2,6 +2,8 @@ package br.com.itau.grupo4.ticketsmicroservice.service;
 
 import br.com.itau.grupo4.ticketsmicroservice.dto.BuyTicketsRequest;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
+import br.com.itau.grupo4.ticketsmicroservice.exception.SeatUnavailableException;
+import br.com.itau.grupo4.ticketsmicroservice.exception.SessionNotFoundException;
 import br.com.itau.grupo4.ticketsmicroservice.mapper.TicketMapper;
 import br.com.itau.grupo4.ticketsmicroservice.model.Ticket;
 import br.com.itau.grupo4.ticketsmicroservice.model.exception.TicketNotFoundException;
@@ -19,7 +21,7 @@ public class TicketService {
 
     public void buyTickets(BuyTicketsRequest request) {
         verifySessionIsAvailable(request.getSessionId());
-        verifySeatIsAvailable();//passar os assento
+        verifySeatIsAvailable(request.getSeatColumn(), request.getSeatRow());
 
         Ticket ticket = TicketMapper.convertBuyRequestToEntity(request);
         repository.save(ticket);
@@ -33,12 +35,18 @@ public class TicketService {
         //TODO: Verificar no service de session se ela é válida
         // Se for, retorna pro método comprar
         // se não for, lançar exceção aqui
+        if (sessionId == null) {
+            throw new SessionNotFoundException("A sessão informada não foi encontrada!");
+        }
     }
 
-    private void verifySeatIsAvailable() {//vai receber o assento e enviar conforme o service de Session precisa
+    private void verifySeatIsAvailable(int column, int row) {
         //TODO: Verificar no service de session se o assento está disponível
         // Se estiver, retorna pro método comprar
         // se não, lançar exceção aqui
+        if (column == 0 || row == 0) {
+            throw new SeatUnavailableException("O assento informado não foi encontrado!");
+        }
     }
 
     private void ocupySeat() {//vai receber o assento e enviar conforme o service de Session precisa
