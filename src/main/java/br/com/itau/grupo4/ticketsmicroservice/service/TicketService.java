@@ -9,6 +9,7 @@ import br.com.itau.grupo4.ticketsmicroservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,10 +17,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TicketService {
 
-    private final TicketRepository repository;
+    private final TicketRepository ticketRepository;
 
     public TicketResponse findById(UUID id) {
-        var model = repository.findById(id).orElseThrow(()-> new TicketNotFoundException("O ticket não existe!"));
+        var model = ticketRepository.findById(id).orElseThrow(()-> new TicketNotFoundException("O ticket não existe!"));
         return modelToResponse(model);
     }
 
@@ -32,5 +33,9 @@ public class TicketService {
                 .seatRow(model.getSeatRow())
                 .type(model.getType())
                 .build();
+    }
+
+    public List<Ticket> findAll() {
+        return ticketRepository.findAll();
     }
 }
