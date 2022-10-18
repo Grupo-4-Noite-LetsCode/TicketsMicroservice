@@ -1,6 +1,5 @@
 package br.com.itau.grupo4.ticketsmicroservice;
 
-import br.com.itau.grupo4.ticketsmicroservice.model.Ticket;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
