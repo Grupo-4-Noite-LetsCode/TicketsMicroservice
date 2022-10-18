@@ -1,4 +1,4 @@
-package br.com.itau.grupo4.ticketsmicroservice.controller;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.controller;
 
 import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
 import br.com.itau.grupo4.ticketsmicroservice.service.TicketService;
