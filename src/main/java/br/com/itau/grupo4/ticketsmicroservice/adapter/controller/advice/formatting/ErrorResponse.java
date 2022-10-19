@@ -1,4 +1,4 @@
-package br.com.itau.grupo4.ticketsmicroservice.controller.advice.formatting;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice.formatting;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

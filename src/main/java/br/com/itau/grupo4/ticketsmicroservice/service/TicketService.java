@@ -1,5 +1,6 @@
 package br.com.itau.grupo4.ticketsmicroservice.service;
 
+import br.com.itau.grupo4.ticketsmicroservice.adapter.qrcodeapi.GenerateQrCodeAPI;
 import br.com.itau.grupo4.ticketsmicroservice.client.payment.dto.RefundRequest;
 import br.com.itau.grupo4.ticketsmicroservice.client.payment.service.PaymentService;
 import br.com.itau.grupo4.ticketsmicroservice.client.session.dto.SessionRequest;
@@ -24,6 +25,7 @@ public class TicketService {
     private final TicketRepository repository;
     private final SessionService sessionService;
     private final PaymentService paymentService;
+    private final GenerateQrCodeAPI qrCodeAPI;
 
     public TicketResponse findById(UUID id) {
         var model = repository.findById(id).orElseThrow(()-> new TicketNotFoundException("O ticket não existe!"));
@@ -78,6 +80,12 @@ public class TicketService {
                 .seatRow(model.getSeatRow())
                 .type(model.getType())
                 .build();
+    }
+
+    public String generateQrCode(UUID id){
+        findById(id);
+        String url = "http://localhost:8080/tickets/" + id;
+        return qrCodeAPI.getQrCode(url);
     }
 
     private CanceledTicketResponse modelToCanceled(Ticket ticket){
