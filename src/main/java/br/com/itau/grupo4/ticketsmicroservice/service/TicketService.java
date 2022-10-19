@@ -43,16 +43,7 @@ public class TicketService {
         repository.save(ticket);
 
         sessionService.ocupySeat(sessionId, seatLine, seatColumn);
-        sendPayment(ticket);
-        sendEmail();
-    }
-
-    private void sendPayment(Ticket ticket) {
-        //TODO: Enviar ticket para o service de Payments
-    }
-
-
-    private void sendEmail() {
+        paymentService.sendPayment(ticket);
         //TODO: Comunicar com service Notifications para enviar o e-mail "aguardando pagamento"
     }
 
