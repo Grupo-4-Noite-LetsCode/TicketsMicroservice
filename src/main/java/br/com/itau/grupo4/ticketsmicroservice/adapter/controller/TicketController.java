@@ -38,14 +38,14 @@ public class TicketController {
     }
 
     @PatchMapping("/cancelamento/{id}")
-    public ResponseEntity<CanceledTicketResponse> cancelTicket(@PathVariable("id") UUID id){
+    public ResponseEntity<CanceledTicketResponse> cancelTicket(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(service.cancel(id));
     }
 
     @PostMapping
-    public ResponseEntity<Object> buyTickets(@RequestBody BuyTicketsRequest request) {
-        service.buyTickets(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    public ResponseEntity<Mono<TicketResponse>> buyTickets(@RequestBody BuyTicketsRequest request) {
+        Mono<TicketResponse> response = service.buyTickets(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("{id}")

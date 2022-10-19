@@ -2,7 +2,6 @@ package br.com.itau.grupo4.ticketsmicroservice.service;
 
 import br.com.itau.grupo4.ticketsmicroservice.dto.BuyTicketsRequest;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
-import br.com.itau.grupo4.ticketsmicroservice.mapper.TicketMapper;
 
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.qrcodeapi.GenerateQrCodeAPI;
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.payment.dto.RefundRequest;
@@ -17,6 +16,7 @@ import br.com.itau.grupo4.ticketsmicroservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientException;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ public class TicketService {
     private final PaymentService paymentService;
     private final GenerateQrCodeAPI qrCodeAPI;
 
-    public void buyTickets(BuyTicketsRequest request) {
+    public Mono<TicketResponse> buyTickets(BuyTicketsRequest request) {
         String sessionId = request.getSessionId();
         int seatLine = request.getSeatColumn();
         int seatColumn = request.getSeatLine();
@@ -39,12 +39,14 @@ public class TicketService {
         sessionService.verifySessionIsAvailable(sessionId);
         sessionService.verifySeatIsAvailable(sessionId, seatLine, seatColumn);
 
-        Ticket ticket = TicketMapper.convertBuyRequestToEntity(request);
+        Ticket ticket = buyRequestToModel(request);
         repository.save(ticket);
 
         sessionService.ocupySeat(sessionId, seatLine, seatColumn);
         paymentService.sendPayment(ticket);
         //TODO: Comunicar com service Notifications para enviar o e-mail "aguardando pagamento"
+
+        return Mono.just(modelToResponse(ticket));
     }
 
     public TicketResponse findById(UUID id) {
@@ -114,5 +116,15 @@ public class TicketService {
                 .sessionId(ticket.getSessionId())
                 .status(ticket.getStatus())
                 .build();
+    }
+
+    private Ticket buyRequestToModel(BuyTicketsRequest request) {
+        Ticket ticket = new Ticket();
+        ticket.setSessionId(request.getSessionId());
+        ticket.setSeatColumn(request.getSeatColumn());
+        ticket.setSeatLine(request.getSeatLine());
+        ticket.setType(request.getType());
+
+        return ticket;
     }
 }
