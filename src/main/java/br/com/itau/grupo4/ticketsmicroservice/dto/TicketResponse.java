@@ -12,7 +12,7 @@ import java.util.UUID;
 public class TicketResponse {
 
     private UUID id;
-    private UUID sessionId;
+    private String sessionId;
     private TicketStatus status;
     private int seatColumn;
     private int seatRow;

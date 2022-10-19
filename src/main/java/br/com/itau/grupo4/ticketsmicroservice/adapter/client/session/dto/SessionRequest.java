@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class SessionRequest {
-    private UUID sessionId;
+    private String sessionId;
     private int seatColumn;
     private int seatRow;
 }

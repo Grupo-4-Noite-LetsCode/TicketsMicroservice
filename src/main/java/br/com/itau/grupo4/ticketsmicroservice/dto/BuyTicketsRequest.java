@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 public class BuyTicketsRequest {
-    private UUID sessionId;
+    private String sessionId;
     private int seatColumn;
     private int seatRow;
     private TicketType type;

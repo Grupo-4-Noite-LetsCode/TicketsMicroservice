@@ -34,7 +34,7 @@ public class TicketService {
     private final GenerateQrCodeAPI qrCodeAPI;
 
     public void buyTickets(BuyTicketsRequest request) {
-        verifySessionIsAvailable(request.getSessionId());
+        sessionService.verifySessionIsAvailable(request.getSessionId());
         verifySeatIsAvailable(request.getSeatColumn(), request.getSeatRow());
 
         Ticket ticket = TicketMapper.convertBuyRequestToEntity(request);
@@ -43,15 +43,6 @@ public class TicketService {
         ocupySeat();//enviar assento
         sendPayment(ticket);
         sendEmail();
-    }
-
-    private void verifySessionIsAvailable(UUID sessionId) {
-        //TODO: Verificar no service de session se ela é válida
-        // Se for, retorna pro método comprar
-        // se não for, lançar exceção aqui
-        if (sessionId == null) {
-            throw new SessionNotFoundException("A sessão informada não foi encontrada!");
-        }
     }
 
     private void verifySeatIsAvailable(int column, int row) {

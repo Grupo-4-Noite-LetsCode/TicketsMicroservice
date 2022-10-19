@@ -10,6 +10,6 @@ import java.util.UUID;
 @Builder
 public class CanceledTicketResponse {
     private UUID ticketId;
-    private UUID sessionId;
+    private String sessionId;
     private TicketStatus status;
 }

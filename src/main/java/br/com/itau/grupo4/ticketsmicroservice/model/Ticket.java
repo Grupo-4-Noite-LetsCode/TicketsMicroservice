@@ -18,8 +18,7 @@ public class Ticket {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID sessionId;
+    private String sessionId;
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status = TicketStatus.PEDIDO_RECEBIDO;
