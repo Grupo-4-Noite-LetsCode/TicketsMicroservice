@@ -43,7 +43,7 @@ public class TicketService {
         repository.save(ticket);
 
         sessionService.ocupySeat(sessionId, seatLine, seatColumn);
-        paymentService.sendPayment(ticket);
+        paymentService.sendTicketToPayment(ticket);
         //TODO: Comunicar com service Notifications para enviar o e-mail "aguardando pagamento"
 
         return Mono.just(modelToResponse(ticket));

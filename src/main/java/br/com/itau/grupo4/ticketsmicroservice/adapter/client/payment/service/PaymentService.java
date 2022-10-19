@@ -13,21 +13,27 @@ public class PaymentService {
 
     public PaymentService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
-                .baseUrl("http://localhost:8090")
+                .baseUrl("http://localhost:8090/payments")
                 .build();
     }
 
     public Mono<RefundResponse> patchReimbursement(RefundRequest request){
         Mono<RefundResponse> paymentoResponseMono = this.webClient
                 .patch()
-                .uri("/payment/reimbursement")
+                .uri("/reimbursement")
                 .body(Mono.just(request), RefundRequest.class)
                 .retrieve()
                 .bodyToMono(RefundResponse.class);
         return paymentoResponseMono;
     }
 
-    public void sendPayment(Ticket ticket) {
-        //TODO: Enviar ticket para o service de Payments
+    //TODO: Verificar url e body necessário
+    public void sendTicketToPayment(Ticket ticket) {
+        this.webClient
+                .post()
+                .uri("/ticket")
+                .body(Mono.just(ticket), RefundRequest.class)
+                .retrieve()
+                .bodyToMono(RefundResponse.class);
     }
 }
