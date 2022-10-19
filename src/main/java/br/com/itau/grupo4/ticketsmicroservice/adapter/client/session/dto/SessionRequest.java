@@ -1,4 +1,4 @@
-package br.com.itau.grupo4.ticketsmicroservice.client.session.dto;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.dto;
 
 import lombok.Builder;
 import lombok.Data;

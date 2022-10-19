@@ -1,12 +1,10 @@
-package br.com.itau.grupo4.ticketsmicroservice.client.session.service;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.service;
 
-import br.com.itau.grupo4.ticketsmicroservice.client.session.dto.SessionRequest;
-import br.com.itau.grupo4.ticketsmicroservice.client.session.dto.SessionResponse;
+import br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.dto.SessionRequest;
+import br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.dto.SessionResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 @Component
 public class SessionService {

@@ -1,7 +1,7 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.controller;
 
 
-import br.com.itau.grupo4.ticketsmicroservice.adapter.qrcodeapi.GenerateQrCodeAPI;
+import br.com.itau.grupo4.ticketsmicroservice.adapter.client.qrcodeapi.GenerateQrCodeAPI;
 import br.com.itau.grupo4.ticketsmicroservice.dto.Base64Response;
 import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 

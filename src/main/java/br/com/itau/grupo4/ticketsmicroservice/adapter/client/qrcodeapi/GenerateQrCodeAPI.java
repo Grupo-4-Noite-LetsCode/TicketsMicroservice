@@ -1,4 +1,4 @@
-package br.com.itau.grupo4.ticketsmicroservice.adapter.qrcodeapi;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.client.qrcodeapi;
 
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
 import org.springframework.stereotype.Service;
