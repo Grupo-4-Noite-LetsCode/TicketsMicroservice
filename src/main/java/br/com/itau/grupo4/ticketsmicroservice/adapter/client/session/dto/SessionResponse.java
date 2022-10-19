@@ -8,5 +8,5 @@ import java.util.UUID;
 @Data
 public class SessionResponse {
     private String id;
-    private LocalDateTime dateTimeSession;
+    private LocalDateTime dateTime;
 }
