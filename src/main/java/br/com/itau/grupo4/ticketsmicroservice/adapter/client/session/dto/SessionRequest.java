@@ -1,4 +1,4 @@
-package br.com.itau.grupo4.ticketsmicroservice.client.session.dto;
+package br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +9,6 @@ import java.util.UUID;
 @Builder
 public class SessionRequest {
     private UUID sessionId;
-    private String seatColumn;
-    private String seatRow;
+    private int seatColumn;
+    private int seatRow;
 }
