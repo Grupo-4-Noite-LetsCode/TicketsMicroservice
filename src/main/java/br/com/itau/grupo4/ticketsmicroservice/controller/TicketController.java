@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -19,9 +20,9 @@ public class TicketController {
     private final TicketService service;
 
     @GetMapping("{id}")
-    public ResponseEntity<TicketResponse> findTicketById(@PathVariable UUID id){
+    public Mono<TicketResponse> findTicketById(@PathVariable UUID id){
         var response = service.findById(id);
-        return ResponseEntity.ok(response);
+        return Mono.just(response);
 
     }
 }
