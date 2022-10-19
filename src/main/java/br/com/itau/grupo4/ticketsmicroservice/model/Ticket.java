@@ -2,7 +2,6 @@ package br.com.itau.grupo4.ticketsmicroservice.model;
 
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketType;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
