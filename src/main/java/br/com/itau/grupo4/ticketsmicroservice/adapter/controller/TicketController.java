@@ -1,6 +1,7 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.controller;
 
 import br.com.itau.grupo4.ticketsmicroservice.adapter.qrcodeapi.GenerateQrCodeAPI;
+import br.com.itau.grupo4.ticketsmicroservice.dto.Base64Response;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
 import br.com.itau.grupo4.ticketsmicroservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class TicketController {
     }
 
     @GetMapping("/qr/{id}")
-    public ResponseEntity<String> generateQrCode(@PathVariable UUID id){
-        return ResponseEntity.ok(service.generateQrCode(id));
+    public Mono<Base64Response> generateQrCode(@PathVariable UUID id){
+        Base64Response response = Base64Response.builder().base64(service.generateQrCode(id)).build();
+        return Mono.just(response);
     }
 }
