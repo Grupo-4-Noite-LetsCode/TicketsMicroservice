@@ -2,7 +2,7 @@ package br.com.itau.grupo4.ticketsmicroservice.model;
 
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketType;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -10,6 +10,9 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ticket {
 
     @Id

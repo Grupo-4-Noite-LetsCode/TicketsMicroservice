@@ -26,24 +26,23 @@ public class TicketService {
     private final PaymentService paymentService;
 
     public TicketResponse findById(UUID id) {
-        var model = repository.findById(id).orElseThrow(()-> new TicketNotFoundException("O ticket não existe!"));
+        var model = repository.findById(id)
+                .orElseThrow(()-> new TicketNotFoundException("Ticket não existente."));
         return modelToResponse(model);
     }
 
-    public CanceledTicketResponse cancel(UUID id) {
-        Ticket ticket = getById(id);
+    public void cancel(UUID id) {
+        TicketResponse ticket = findById(id);
 
         try{
             unblockSeat(ticket);
             refundPayment(ticket);
         }catch (WebClientException e){
-            throw new RuntimeException(e.getLocalizedMessage()); //? Personalizar exception?
+            throw new RuntimeException(e.getLocalizedMessage());
         }finally {
             ticket.setStatus(CANCELADO); // ?
-            repository.save(ticket);
+            repository.save(responseToModel(ticket));
         }
-
-        return modelToCanceled(ticket);
     }
 
     private Ticket getById(UUID id){
@@ -51,7 +50,7 @@ public class TicketService {
                 .orElseThrow(()-> new TicketNotFoundException("Ticket não existente."));
     }
 
-    private void unblockSeat(Ticket ticket){
+    private void unblockSeat(TicketResponse ticket){
         SessionRequest request = SessionRequest.builder()
                 .sessionId(ticket.getSessionId())
                 .seatColumn(ticket.getSeatColumn())
@@ -61,7 +60,7 @@ public class TicketService {
         sessionService.unblockSeat(request);
     }
 
-    private void refundPayment(Ticket ticket){
+    private void refundPayment(TicketResponse ticket){
         RefundRequest request = RefundRequest.builder()
                 .ticketId(ticket.getId())
                 .status(ticket.getStatus())
@@ -80,11 +79,14 @@ public class TicketService {
                 .build();
     }
 
-    private CanceledTicketResponse modelToCanceled(Ticket ticket){
-        return CanceledTicketResponse.builder()
-                .ticketId(ticket.getId())
-                .sessionId(ticket.getSessionId())
-                .status(ticket.getStatus())
+    private Ticket responseToModel(TicketResponse ticketResponse){
+        return Ticket.builder()
+                .id(ticketResponse.getId())
+                .sessionId(ticketResponse.getSessionId())
+                .status(ticketResponse.getStatus())
+                .seatColumn(ticketResponse.getSeatColumn())
+                .seatRow(ticketResponse.getSeatRow())
+                .type(ticketResponse.getType())
                 .build();
     }
 }
