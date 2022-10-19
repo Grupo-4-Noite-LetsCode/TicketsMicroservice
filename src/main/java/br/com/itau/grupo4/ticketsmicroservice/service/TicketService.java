@@ -11,7 +11,7 @@ import br.com.itau.grupo4.ticketsmicroservice.adapter.client.payment.dto.RefundR
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.payment.service.PaymentService;
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.dto.SessionRequest;
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.session.service.SessionService;
-import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
+import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
 import br.com.itau.grupo4.ticketsmicroservice.exception.TicketNotFoundException;
 
 import br.com.itau.grupo4.ticketsmicroservice.model.Ticket;
@@ -22,7 +22,6 @@ import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.util.UUID;
 
-import static br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -78,24 +77,33 @@ public class TicketService {
     }
 
     public TicketResponse findById(UUID id) {
-        var model = repository.findById(id).orElseThrow(()-> new TicketNotFoundException("O ticket não existe!"));
+        var model = getById(id);
         return modelToResponse(model);
     }
 
-    public CanceledTicketResponse cancel(UUID id) {
-        Ticket ticket = getById(id);
+    public String generateQrCode(UUID id){
+        findById(id);
+        String url = "http://localhost:8080/tickets/" + id;
+        return qrCodeAPI.getQrCode(url);
+    }
+
+    public void cancel(UUID id) {
+        TicketResponse ticket = findById(id);
 
         try{
             unblockSeat(ticket);
             refundPayment(ticket);
         }catch (WebClientException e){
-            throw new RuntimeException(e.getLocalizedMessage()); //? Personalizar exception?
+            throw new RuntimeException(e.getLocalizedMessage());
         }finally {
-            ticket.setStatus(CANCELADO); // ?
-            repository.save(ticket);
+            updateStatus(id, TicketStatus.CANCELADO);
         }
+    }
 
-        return modelToCanceled(ticket);
+    private void updateStatus(UUID id, TicketStatus status){
+        Ticket ticket = getById(id);
+        ticket.setStatus(status);
+        repository.save(ticket);
     }
 
     private Ticket getById(UUID id){
@@ -103,7 +111,7 @@ public class TicketService {
                 .orElseThrow(()-> new TicketNotFoundException("Ticket não existente."));
     }
 
-    private void unblockSeat(Ticket ticket){
+    private void unblockSeat(TicketResponse ticket){
         SessionRequest request = SessionRequest.builder()
                 .sessionId(ticket.getSessionId())
                 .seatColumn(ticket.getSeatColumn())
@@ -113,7 +121,7 @@ public class TicketService {
         sessionService.unblockSeat(request);
     }
 
-    private void refundPayment(Ticket ticket){
+    private void refundPayment(TicketResponse ticket){
         RefundRequest request = RefundRequest.builder()
                 .ticketId(ticket.getId())
                 .status(ticket.getStatus())
@@ -129,20 +137,6 @@ public class TicketService {
                 .seatColumn(model.getSeatColumn())
                 .seatRow(model.getSeatRow())
                 .type(model.getType())
-                .build();
-    }
-
-    public String generateQrCode(UUID id){
-        findById(id);
-        String url = "http://localhost:8080/tickets/" + id;
-        return qrCodeAPI.getQrCode(url);
-    }
-
-    private CanceledTicketResponse modelToCanceled(Ticket ticket){
-        return CanceledTicketResponse.builder()
-                .ticketId(ticket.getId())
-                .sessionId(ticket.getSessionId())
-                .status(ticket.getStatus())
                 .build();
     }
 }
