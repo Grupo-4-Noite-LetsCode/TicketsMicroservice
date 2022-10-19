@@ -4,8 +4,8 @@ import br.com.itau.grupo4.ticketsmicroservice.client.payment.dto.RefundRequest;
 import br.com.itau.grupo4.ticketsmicroservice.client.payment.service.PaymentService;
 import br.com.itau.grupo4.ticketsmicroservice.client.session.dto.SessionRequest;
 import br.com.itau.grupo4.ticketsmicroservice.client.session.service.SessionService;
-import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
+import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
 import br.com.itau.grupo4.ticketsmicroservice.exception.TicketNotFoundException;
 import br.com.itau.grupo4.ticketsmicroservice.model.Ticket;
 import br.com.itau.grupo4.ticketsmicroservice.repository.TicketRepository;
@@ -15,7 +15,6 @@ import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.util.UUID;
 
-import static br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +25,7 @@ public class TicketService {
     private final PaymentService paymentService;
 
     public TicketResponse findById(UUID id) {
-        var model = repository.findById(id)
-                .orElseThrow(()-> new TicketNotFoundException("Ticket não existente."));
+        var model = getById(id);
         return modelToResponse(model);
     }
 
@@ -40,9 +38,14 @@ public class TicketService {
         }catch (WebClientException e){
             throw new RuntimeException(e.getLocalizedMessage());
         }finally {
-            ticket.setStatus(CANCELADO); // ?
-            repository.save(responseToModel(ticket));
+            updateStatus(id, TicketStatus.CANCELADO);
         }
+    }
+
+    private void updateStatus(UUID id, TicketStatus status){
+        Ticket ticket = getById(id);
+        ticket.setStatus(status);
+        repository.save(ticket);
     }
 
     private Ticket getById(UUID id){
