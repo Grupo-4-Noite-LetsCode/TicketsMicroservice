@@ -12,26 +12,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import java.util.Base64;
+import br.com.itau.grupo4.ticketsmicroservice.dto.CanceledTicketResponse;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
 public class TicketController {
-
-    private final TicketService service;
+    private final TicketService ticketService;
     private final GenerateQrCodeAPI qrCodeAPI;
+
     @GetMapping("{id}")
-    public ResponseEntity<TicketResponse> findTicketById(@PathVariable UUID id){
-        var response = service.findById(id);
-        return ResponseEntity.ok(response);
+    public Mono<TicketResponse> findTicketById(@PathVariable UUID id){
+        var response = ticketService.findById(id);
+        return Mono.just(response);
 
     }
-
     @GetMapping("/qr/{id}")
-    public Mono<Base64Response> generateQrCode(@PathVariable UUID id){
-        Base64Response response = Base64Response.builder().base64(service.generateQrCode(id)).build();
+    public Mono<Base64Response> generateQrCode(@PathVariable UUID id) {
+        Base64Response response = Base64Response.builder().base64(ticketService.generateQrCode(id)).build();
         return Mono.just(response);
+    }
+    @PatchMapping("/cancelamento/{id}")
+    public ResponseEntity<CanceledTicketResponse> cancelTicket(@PathVariable("id") UUID id){
+        return ResponseEntity.ok(ticketService.cancel(id));
     }
 }

@@ -1,7 +1,7 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice;
 
 import br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice.formatting.ErrorResponse;
-import br.com.itau.grupo4.ticketsmicroservice.model.exception.TicketNotFoundException;
+import br.com.itau.grupo4.ticketsmicroservice.exception.TicketNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
