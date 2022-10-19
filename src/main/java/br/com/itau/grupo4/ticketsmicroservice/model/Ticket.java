@@ -25,7 +25,7 @@ public class Ticket {
 
     private int seatColumn;
 
-    private int seatRow;
+    private int seatLine;
 
     @Enumerated(EnumType.STRING)
     private TicketType type;

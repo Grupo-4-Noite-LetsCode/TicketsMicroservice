@@ -2,8 +2,6 @@ package br.com.itau.grupo4.ticketsmicroservice.service;
 
 import br.com.itau.grupo4.ticketsmicroservice.dto.BuyTicketsRequest;
 import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
-import br.com.itau.grupo4.ticketsmicroservice.exception.SeatUnavailableException;
-import br.com.itau.grupo4.ticketsmicroservice.exception.SessionNotFoundException;
 import br.com.itau.grupo4.ticketsmicroservice.mapper.TicketMapper;
 
 import br.com.itau.grupo4.ticketsmicroservice.adapter.client.qrcodeapi.GenerateQrCodeAPI;
@@ -34,29 +32,19 @@ public class TicketService {
     private final GenerateQrCodeAPI qrCodeAPI;
 
     public void buyTickets(BuyTicketsRequest request) {
-        sessionService.verifySessionIsAvailable(request.getSessionId());
-        verifySeatIsAvailable(request.getSeatColumn(), request.getSeatRow());
+        String sessionId = request.getSessionId();
+        int seatLine = request.getSeatColumn();
+        int seatColumn = request.getSeatLine();
+
+        sessionService.verifySessionIsAvailable(sessionId);
+        sessionService.verifySeatIsAvailable(sessionId, seatLine, seatColumn);
 
         Ticket ticket = TicketMapper.convertBuyRequestToEntity(request);
         repository.save(ticket);
 
-        ocupySeat();//enviar assento
+        sessionService.ocupySeat(sessionId, seatLine, seatColumn);
         sendPayment(ticket);
         sendEmail();
-    }
-
-    private void verifySeatIsAvailable(int column, int row) {
-        //TODO: Verificar no service de session se o assento está disponível
-        // Se estiver, retorna pro método comprar
-        // se não, lançar exceção aqui
-        if (column == 0 || row == 0) {
-            throw new SeatUnavailableException("O assento informado não foi encontrado!");
-        }
-    }
-
-    private void ocupySeat() {//vai receber o assento e enviar conforme o service de Session precisa
-        //TODO: Ocupar o assento no service de session
-        // se não der certo, como exibe a exception?
     }
 
     private void sendPayment(Ticket ticket) {
@@ -98,7 +86,7 @@ public class TicketService {
         SessionRequest request = SessionRequest.builder()
                 .sessionId(ticket.getSessionId())
                 .seatColumn(ticket.getSeatColumn())
-                .seatRow(ticket.getSeatRow())
+                .seatLine(ticket.getSeatLine())
                 .build();
 
         sessionService.unblockSeat(request);
@@ -118,7 +106,7 @@ public class TicketService {
                 .sessionId(model.getSessionId())
                 .status(model.getStatus())
                 .seatColumn(model.getSeatColumn())
-                .seatRow(model.getSeatRow())
+                .seatLine(model.getSeatLine())
                 .type(model.getType())
                 .build();
     }

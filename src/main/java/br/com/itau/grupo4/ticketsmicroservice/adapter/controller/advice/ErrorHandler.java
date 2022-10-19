@@ -1,5 +1,6 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice;
 
+import br.com.itau.grupo4.ticketsmicroservice.exception.ExpiredSessionException;
 import br.com.itau.grupo4.ticketsmicroservice.exception.SeatUnavailableException;
 import br.com.itau.grupo4.ticketsmicroservice.exception.SessionNotFoundException;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ErrorHandler {
 
-    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, SeatUnavailableException.class})
+    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, SeatUnavailableException.class, ExpiredSessionException.class})
     protected ResponseEntity<ErrorResponse> handleBadRequestException(Exception e) {
         var status = HttpStatus.BAD_REQUEST;
         var msg = retrieveMessage(e);

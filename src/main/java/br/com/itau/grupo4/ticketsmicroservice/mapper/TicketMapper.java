@@ -9,7 +9,7 @@ public class TicketMapper {
         Ticket ticket = new Ticket();
         ticket.setSessionId(request.getSessionId());
         ticket.setSeatColumn(request.getSeatColumn());
-        ticket.setSeatRow(request.getSeatRow());
+        ticket.setSeatLine(request.getSeatLine());
         ticket.setType(request.getType());
 
         return ticket;

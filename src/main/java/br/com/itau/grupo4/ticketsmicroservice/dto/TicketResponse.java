@@ -15,6 +15,6 @@ public class TicketResponse {
     private String sessionId;
     private TicketStatus status;
     private int seatColumn;
-    private int seatRow;
+    private int seatLine;
     private TicketType type;
 }
