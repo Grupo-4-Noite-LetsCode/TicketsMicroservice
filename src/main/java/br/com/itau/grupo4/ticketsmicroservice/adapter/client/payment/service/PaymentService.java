@@ -27,7 +27,7 @@ public class PaymentService {
         return paymentoResponseMono;
     }
 
-    //TODO: Verificar url e body necessário
+    //TODO: Verificar url e body necessário. Não definimos o tipo de pagamento nem valor do ingresso. Combinar com as equipes de Tickets e Payments
     public void sendTicketToPayment(Ticket ticket) {
         this.webClient
                 .post()
