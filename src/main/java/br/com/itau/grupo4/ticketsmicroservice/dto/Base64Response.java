@@ -1,6 +1,5 @@
 package br.com.itau.grupo4.ticketsmicroservice.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

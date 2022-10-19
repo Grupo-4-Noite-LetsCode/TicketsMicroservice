@@ -1,11 +1,9 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.client.qrcodeapi;
 
-import br.com.itau.grupo4.ticketsmicroservice.dto.TicketResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Base64;
 
 @Service

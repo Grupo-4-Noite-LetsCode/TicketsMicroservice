@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Component
 public class SessionService {
@@ -47,7 +46,7 @@ public class SessionService {
         }
 
         //TODO: confirmar se o response vem com a data e hora da sessão, e como vem (nomes das variáveis e tipos).
-        if (sessionResponseMono.blockOptional().get().getDateTimeSession().isBefore(LocalDateTime.now())){
+        if (sessionResponseMono.blockOptional().get().getDateTime().isBefore(LocalDateTime.now())){
             throw new ExpiredSessionException("Essa sessão já foi iniciada, escolha um novo horário!");
         }
     }

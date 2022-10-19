@@ -1,7 +1,6 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.client.payment.dto;
 
 import br.com.itau.grupo4.ticketsmicroservice.enums.TicketStatus;
-import br.com.itau.grupo4.ticketsmicroservice.enums.TicketType;
 import lombok.Builder;
 import lombok.Data;
 
