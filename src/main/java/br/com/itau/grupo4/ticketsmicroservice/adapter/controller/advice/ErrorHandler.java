@@ -1,8 +1,11 @@
 package br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice;
 
-import br.com.itau.grupo4.ticketsmicroservice.controller.advice.formatting.ErrorResponse;
 import br.com.itau.grupo4.ticketsmicroservice.exception.SeatUnavailableException;
 import br.com.itau.grupo4.ticketsmicroservice.exception.SessionNotFoundException;
+
+import br.com.itau.grupo4.ticketsmicroservice.adapter.controller.advice.formatting.ErrorResponse;
+import br.com.itau.grupo4.ticketsmicroservice.exception.TicketNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import br.com.itau.grupo4.ticketsmicroservice.model.exception.TicketNotFoundException;
 
 import java.util.Objects;
 
